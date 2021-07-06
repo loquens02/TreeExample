@@ -1,19 +1,14 @@
-import java.util.*;
-
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 public class TreeNode<T>{//<T extends Integer>{// implements Comparable<Number>{
-//    public T left;
-//    public T right;
 //    public T parent;
     int key;
-    ArrayList<TreeNode<T>> children;
+    public TreeNode<T> left;
+    public TreeNode<T> right;
 
-
-    TreeNode(int key) {
+    public TreeNode(int key) {
         this.key = key;
-        this.children = new ArrayList<>();
     }
 
     //    새 노드 생성
@@ -24,86 +19,67 @@ public class TreeNode<T>{//<T extends Integer>{// implements Comparable<Number>{
 
 
 //    기존 노드가 있다면. 거기에 추가하고 싶다면.
-    TreeNode<T> addNode(TreeNode<T> node, int  key){
-        if(null == node){
-            System.out.println("기존 node가 null입니다");
-            return null;
-        }
-        int temp;
-
+    public TreeNode<T> insertNode(int  key){
+        TreeNode<T> temp;
         TreeNode<T> newNode= makeNode(key);
 
-//          '왼쪽자식_children.get(0) < 부모_node <= 오른쪽자식_children.get(1)' 되도록
-/*
-    case A. 왼쪽 자식이 없다면
-    case B. 오른쪽 자식이 없다면
- */
+//          '왼쪽자식 < 부모_node <= 오른쪽자식' 되도록
         if (smallerThanParent(key)){
-            if(null == getLeftChild()){         // null 인 이유가 children이 null 일수도 있음
-                children.set(0,newNode);        // TODO Error- IndexOutOfBoundsException
+            if(null == left){
+                left= newNode;
             }
-//            temp= children.get(0).getKey();
-        } else { // biggerThanParent
-//            temp= children.get(1).getKey();
+            temp= left;
+        } else { // biggerOrSame ThanParent
+            if(null == right){
+                right= newNode;
+            }
+            temp= right;
         }
 
-
-        if(2> node.children.size()) {
-            children.add(newNode);
-        } else {
-
-        }
         return this;    // Chaining - https://stackoverflow.com/a/21180314
     }
 
+    // this.key: 현재 노드. parent
+    // key: 넣을 값
     boolean smallerThanParent(int key){
-        return this.key < key ? TRUE : FALSE;
+        return this.key > key ? TRUE : FALSE;
     }
 
-//        TODO left child <= parent <= right child 순서로 재배열해야
 
 
     public int getKey() {
         return key;
     }
 
-    public void setKey(int  key) {
+    public void setKey(int key) {
         this.key = key;
     }
 
-    public List<TreeNode<T>> getChildren() {
-        return children;
+    public TreeNode<T> getLeft() {
+        return left;
     }
 
-    // list의 첫 요소
-    public TreeNode<T> getLeftChild() {
-        if (null == children || 0==children.size()) {
-            return null;
-        }
-        return children.get(0);
-    }
-    // list의 둘째 요소
-    public TreeNode<T> getRightChild() {
-        if (null == children || 2> children.size()) {
-            return null;
-        }
-        return children.get(1);
+    public void setLeft(TreeNode<T> left) {
+        this.left = left;
     }
 
-
-    public void setChildren(ArrayList<TreeNode<T>> children) {
-        this.children = children;
+    public TreeNode<T> getRight() {
+        return right;
     }
 
+    public void setRight(TreeNode<T> right) {
+        this.right = right;
+    }
+
+//    이게 있어야 TreeNode 만 뽑아도 sout 에서 값이 나온다. 아니면 뽑을 때 node.getKey() 하거나.
     @Override
     public String toString() {
         return "TreeNode{" +
                 "key=" + key +
-                ", children=" + children +
+                ", left=" + left +
+                ", right=" + right +
                 '}';
     }
-
-
 }
 
 
