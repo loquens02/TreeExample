@@ -1,9 +1,12 @@
+import util.FileGenerator;
+
 public class TreeProgram {
 
     public static void main(String[] args) {
-        // 만약 첫 노드가 1이면 끔찍 => 이진탐색트리에서 배분해줘야.
 
-//        미할당 시 객체 초깃값이 null 이 아니더라.
+        FileGenerator.generateCSV(50);
+
+//        미할당 시 객체 초깃값이 null 이 아니더라. https://softwareengineering.stackexchange.com/a/257865
         TreeNode node = null;
 
         node= insertNode(node, makeNode(11));
@@ -44,7 +47,6 @@ public class TreeProgram {
         }
     }
 
-//    treeRoot not nullable - null? NullPointerException!
     static public TreeNode<Integer> insertNode(TreeNode<Integer> treeRoot, TreeNode<Integer> inputNode){
         TreeNode<Integer> lastHead= null;
         TreeNode<Integer> head= treeRoot;    // 서브트리의 머리. 처음에는 root. while 끝나면 null
