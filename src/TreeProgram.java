@@ -1,5 +1,7 @@
 import util.FileGenerator;
 
+import java.util.ArrayList;
+
 public class TreeProgram {
 
     public static void main(String[] args) {
@@ -9,25 +11,30 @@ public class TreeProgram {
 //        미할당 시 객체 초깃값이 null 이 아니더라. https://softwareengineering.stackexchange.com/a/257865
         TreeNode node = null;
 
-        node= insertNode(node, makeNode(11));
-        node= insertNode(node, makeNode(15));
-        node= insertNode(node, makeNode(9));
+//        node= insertNode(node, makeNode(11));
+//        node= insertNode(node, makeNode(15));
+//        node= insertNode(node, makeNode(9));
 
-        int count= 5;
+        int count= 8;
         while(count > 0){
             int tempKey= (int)(Math.random()*100);
-            System.out.println(tempKey);
+            System.out.print(tempKey);
+            System.out.print("\t");
 
             node= insertNode(node, makeNode(tempKey));
             count--;
         }
 
+        System.out.println();
+        inorderTreeWork(node);
+
 //        beautify java object. https://codebeautify.org/javaviewer
 //        System.out.println(String.valueOf(node.getLeft().getKey()));
+        System.out.println();
         System.out.println(String.valueOf(node));
 
 
-        System.out.println(String.valueOf(treeSearch(node,9).getKey()));
+//        System.out.println(String.valueOf(treeSearch(node,9).getKey()));
     }
 
     static TreeNode<Integer> makeNode(int key){
@@ -74,6 +81,17 @@ public class TreeProgram {
         }
 
         return treeRoot;
+    }
+
+//    중위순회. root 호출 시 전체
+    static public void inorderTreeWork(TreeNode<Integer> node){
+
+        if (null != node){
+            inorderTreeWork(node.left);
+            System.out.print(String.valueOf(node.getKey()));
+            System.out.print("\t");
+            inorderTreeWork(node.right);
+        }
     }
 }
 
