@@ -1,8 +1,8 @@
-public class TreeNode<T extends Number>{
-//    public T parent;
-    T key;
-    TreeNode<T> left;
-    TreeNode<T> right;
+class TreeNode<T extends Number>{
+//    private T parent;
+    private T key;
+    private TreeNode<T> left;
+    private TreeNode<T> right;
 
     public TreeNode(T key) {
         this.key = key;

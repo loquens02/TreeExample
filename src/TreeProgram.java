@@ -5,17 +5,19 @@ import java.util.ArrayList;
 public class TreeProgram {
 
     public static void main(String[] args) {
+//        config
+        final int CSV_RAND_COUNT= 50;
+        final int MAIN_RAND_COUNT= 8;
 
-        FileGenerator.generateCSV(50);
+        FileGenerator.generateCSV(CSV_RAND_COUNT);
 
 //        미할당 시 객체 초깃값이 null 이 아니더라. https://softwareengineering.stackexchange.com/a/257865
         TreeNode node = null;
 
-//        node= insertNode(node, makeNode(11));
-//        node= insertNode(node, makeNode(15));
-//        node= insertNode(node, makeNode(9));
+//        node= insertNode(node, makeNode(9)); // for treeSearch test
 
-        int count= 8;
+
+        int count= MAIN_RAND_COUNT;
         while(count > 0){
             int tempKey= (int)(Math.random()*100);
             System.out.print(tempKey);
@@ -32,8 +34,11 @@ public class TreeProgram {
 //        System.out.println(String.valueOf(node.getLeft().getKey()));
         System.out.println();
         System.out.println(String.valueOf(node));
+        System.out.println("treeMinimum: "+String.valueOf(treeMinimum(node).getKey()));
+        System.out.println("treeMaximum: "+String.valueOf(treeMaximum(node).getKey()));
 
 
+//        못 찾으면 nullPointerException
 //        System.out.println(String.valueOf(treeSearch(node,9).getKey()));
     }
 
@@ -61,9 +66,9 @@ public class TreeProgram {
         while (head != null){
             lastHead= head;         // 마지막으로 보던 서브트리의 머리
             if (inputNode.getKey() < head.getKey()){
-                head= head.left;
+                head= head.getLeft();
             } else{
-                head= head.right;
+                head= head.getRight();
             }
         }
 
@@ -75,24 +80,40 @@ public class TreeProgram {
             treeRoot= inputNode;
         }
         else if (inputNode.getKey() < lastHead.getKey()){
-            lastHead.left= inputNode;
+            lastHead.setLeft(inputNode);
         } else {
-            lastHead.right= inputNode;
+            lastHead.setRight(inputNode);
         }
 
         return treeRoot;
     }
 
-//    중위순회. root 호출 시 전체
+//    중위순회. root 호출 시 전체. 작은 값부터 출력
     static public void inorderTreeWork(TreeNode<Integer> node){
 
         if (null != node){
-            inorderTreeWork(node.left);
+            inorderTreeWork(node.getLeft());
             System.out.print(String.valueOf(node.getKey()));
             System.out.print("\t");
-            inorderTreeWork(node.right);
+            inorderTreeWork(node.getRight());
         }
     }
+
+    static public TreeNode<Integer> treeMinimum(TreeNode<Integer> node){
+        while (null != node.getLeft()){
+            node= node.getLeft();
+        }
+        return node;
+    }
+
+    static public TreeNode<Integer> treeMaximum(TreeNode<Integer> node){
+        while (null != node.getRight()){
+            node= node.getRight();
+        }
+        return node;
+    }
+
+
 }
 
 
