@@ -1,30 +1,53 @@
 import util.FileGenerator;
+import util.FileReaderMy;
 
-import java.util.ArrayList;
+import java.util.List;
 
+import static config.Config.*;
+
+/**
+ * java list int iterator https://www.daleseo.com/how-to-traverse-list-in-java/
+ */
 public class TreeProgram {
 
     public static void main(String[] args) {
 //        config
-        final int CSV_RAND_COUNT= 50;
-        final int MAIN_RAND_COUNT= 8;
+//        final int CSV_RAND_COUNT= 10;
+//        final int MAIN_RAND_COUNT= 100;
 
-        FileGenerator.generateCSV(CSV_RAND_COUNT);
+
 
 //        미할당 시 객체 초깃값이 null 이 아니더라. https://softwareengineering.stackexchange.com/a/257865
         TreeNode node = null;
 
-//        node= insertNode(node, makeNode(9)); // for treeSearch test
 
+        String mode= "CSV";
+        switch (mode){
+            case "CSV":
+//              csv file generate -> read -> insert to Tree
+                FileGenerator.generateCSV(CSV_RAND_COUNT);
+                List<Integer> csvData= FileReaderMy.readCSV();
 
-        int count= MAIN_RAND_COUNT;
-        while(count > 0){
-            int tempKey= (int)(Math.random()*100);
-            System.out.print(tempKey);
-            System.out.print("\t");
+                for(int tempKey : csvData){
+                    System.out.print(tempKey);
+                    System.out.print("\t");
+                    node= insertNode(node, makeNode(tempKey));
+                }
+                break;
+            case "MAIN":
+//              main rand Int -> insert to Tree
+                node= insertNode(node, makeNode(9)); // for treeSearch test
 
-            node= insertNode(node, makeNode(tempKey));
-            count--;
+                int count= MAIN_RAND_COUNT -1;             // -1: for treeSearch test
+                while(count > 0){
+                    int tempKey= (int)(Math.random()*RAND_RANGE);
+                    System.out.print(tempKey);
+                    System.out.print("\t");
+
+                    node= insertNode(node, makeNode(tempKey));
+                    count--;
+                }
+                break;
         }
 
         System.out.println();
@@ -73,6 +96,7 @@ public class TreeProgram {
         }
 
 //        parent 멤버 불필요. 이거 없이도 treeRoot 밑에 lastHead 가 연결이 된다!!
+//        delete 구현하려니 parent 없으면 안 되겠다. 자기 자신이 부모의 left 인지 right 인지 알려면
 //        inputNode.parent= lastHead;
 
 //        처음에 빈 트리였을 때. treeRoot== null.
@@ -88,7 +112,10 @@ public class TreeProgram {
         return treeRoot;
     }
 
-//    중위순회. root 호출 시 전체. 작은 값부터 출력
+    /**
+     * 중위순회. root 호출 시 전체. 작은 값부터 출력
+     * @param node
+     */
     static public void inorderTreeWork(TreeNode<Integer> node){
 
         if (null != node){
@@ -113,6 +140,15 @@ public class TreeProgram {
         return node;
     }
 
+    static public TreeNode<Integer> deleteNode(TreeNode<Integer> treeRoot, TreeNode<Integer> deleteNode){
+
+        return null;
+    }
+
+    static public TreeNode<Integer> transplant(TreeNode<Integer> treeRoot, TreeNode<Integer> moveNode1, TreeNode<Integer> moveNode2){
+
+        return null;
+    }
 
 }
 
