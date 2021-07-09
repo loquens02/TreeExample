@@ -20,11 +20,11 @@ public class TreeProgram {
 //        미할당 시 객체 초깃값이 null 이 아니더라. https://softwareengineering.stackexchange.com/a/257865
         TreeNode node = null;
 
-
-        String mode= "CSV";
+        String mode= "MAIN";
         switch (mode){
             case "CSV":
 //              csv file generate -> read -> insert to Tree
+                System.out.println(mode+" mode");
                 FileGenerator.generateCSV(CSV_RAND_COUNT);
                 List<Integer> csvData= FileReaderMy.readCSV();
 
@@ -36,7 +36,9 @@ public class TreeProgram {
                 break;
             case "MAIN":
 //              main rand Int -> insert to Tree
-                node= insertNode(node, makeNode(9)); // for treeSearch test
+//                for treeSearch test, delete test, insert inner check
+                System.out.println(mode+" mode");
+                node= insertNode(makeNode(9), makeNode(11));
 
                 int count= MAIN_RAND_COUNT -1;             // -1: for treeSearch test
                 while(count > 0){
@@ -60,9 +62,12 @@ public class TreeProgram {
         System.out.println("treeMinimum: "+String.valueOf(treeMinimum(node).getKey()));
         System.out.println("treeMaximum: "+String.valueOf(treeMaximum(node).getKey()));
 
+//        지울 노드를 달랑 하나 따로 만들어서 넣으면 안 된다. 그럼 자식들이 다 null 이겠지
+        node= deleteNode(node, treeSearch(node,11));
+        inorderTreeWork(node);
 
 //        못 찾으면 nullPointerException
-//        System.out.println(String.valueOf(treeSearch(node,9).getKey()));
+//        System.out.println(String.valueOf(treeSearch(node,11).getKey()));
     }
 
     static TreeNode<Integer> makeNode(int key){
@@ -84,10 +89,10 @@ public class TreeProgram {
 
     static public TreeNode<Integer> insertNode(TreeNode<Integer> treeRoot, TreeNode<Integer> inputNode){
         TreeNode<Integer> lastHead= null;
-        TreeNode<Integer> head= treeRoot;    // 서브트리의 머리. 처음에는 root. while 끝나면 null
+        TreeNode<Integer> head= treeRoot;    // 서브트리의 머리. 처음에는 root. while 끝나면 null. treeRoot -> head
 
         while (head != null){
-            lastHead= head;         // 마지막으로 보던 서브트리의 머리
+            lastHead= head;         // 마지막으로 보던 서브트리의 머리. head -> lastHead
             if (inputNode.getKey() < head.getKey()){
                 head= head.getLeft();
             } else{
@@ -95,15 +100,14 @@ public class TreeProgram {
             }
         }
 
-//        parent 멤버 불필요. 이거 없이도 treeRoot 밑에 lastHead 가 연결이 된다!!
 //        delete 구현하려니 parent 없으면 안 되겠다. 자기 자신이 부모의 left 인지 right 인지 알려면
-//        inputNode.parent= lastHead;
+        inputNode.setParent(lastHead);
 
+//        treeRoot -> head -> lastHead 이기에, lastHead .set( inputNode ) 하면 treeRoot 밑에도 들어가는 것
 //        처음에 빈 트리였을 때. treeRoot== null.
         if (lastHead==null) {
             treeRoot= inputNode;
-        }
-        else if (inputNode.getKey() < lastHead.getKey()){
+        } else if (inputNode.getKey() < lastHead.getKey()){
             lastHead.setLeft(inputNode);
         } else {
             lastHead.setRight(inputNode);
@@ -142,12 +146,46 @@ public class TreeProgram {
 
     static public TreeNode<Integer> deleteNode(TreeNode<Integer> treeRoot, TreeNode<Integer> deleteNode){
 
-        return null;
+        if(null == deleteNode.getLeft()){
+            treeRoot= transplant(treeRoot, deleteNode, deleteNode.getRight());
+        } else if(null == deleteNode.getRight()){
+            treeRoot= transplant(treeRoot, deleteNode, deleteNode.getLeft());
+        } else {
+            TreeNode<Integer> deleteNodeSuccessor= treeMinimum(deleteNode.getRight());      // 직후원소
+
+            if(deleteNodeSuccessor.getParent() != deleteNode){
+                treeRoot= transplant(treeRoot, deleteNodeSuccessor, deleteNodeSuccessor.getRight());
+                deleteNodeSuccessor.setRight(deleteNode.getRight());
+                deleteNodeSuccessor.getRight().setParent(deleteNodeSuccessor);
+            }
+
+            transplant(treeRoot, deleteNode, deleteNodeSuccessor);
+            deleteNodeSuccessor.setLeft(deleteNode.getLeft());
+            deleteNodeSuccessor.getLeft().setParent(deleteNodeSuccessor);
+        }
+        return treeRoot;
     }
 
-    static public TreeNode<Integer> transplant(TreeNode<Integer> treeRoot, TreeNode<Integer> moveNode1, TreeNode<Integer> moveNode2){
+    /**
+     * 사용방법?? 반환?
+     * @param treeRoot
+     * @param subNode1
+     * @param subNode2
+     * @return
+     */
+    static public TreeNode<Integer> transplant(TreeNode<Integer> treeRoot, TreeNode<Integer> subNode1, TreeNode<Integer> subNode2){
+        if(null == subNode1.getParent()){
+            treeRoot= subNode2;
+        } else if(subNode1 == subNode1.getParent().getLeft()){ // 내가 부모의 왼쪽자식이면 내 자리에 subNode2 넣기
+            subNode1.getParent().setLeft(subNode2);
+        } else {
+            subNode1.getParent().setRight(subNode2);            // 내가 부모의 오른쪽자식이면 내 자리에 subNode2 넣기
+        }
 
-        return null;
+        if(null != subNode2){
+            subNode2.setParent(subNode1.getParent());           // 찜찜. 이걸로 되나?
+        }
+        return treeRoot;
     }
 
 }
