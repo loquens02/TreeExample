@@ -1,6 +1,7 @@
 import util.FileGenerator;
 import util.FileReaderMy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static config.Config.*;
@@ -15,18 +16,20 @@ public class TreeProgram {
 //        final int CSV_RAND_COUNT= 10;
 //        final int MAIN_RAND_COUNT= 100;
 
+        List<Integer> treeElements = new ArrayList<>();
+        List<Integer> csvData= null; // mode MAIN 으로 두면 아래쪽 deleteNode 에서 Null Error 날 것
 
 
 //        미할당 시 객체 초깃값이 null 이 아니더라. https://softwareengineering.stackexchange.com/a/257865
         TreeNode node = null;
 
-        String mode= "MAIN";
+        String mode= "CSV";
         switch (mode){
             case "CSV":
 //              csv file generate -> read -> insert to Tree
-                System.out.println(mode+" mode");
+                System.out.println(mode+" mode < < < < ");
                 FileGenerator.generateCSV(CSV_RAND_COUNT);
-                List<Integer> csvData= FileReaderMy.readCSV();
+                csvData= FileReaderMy.readCSV();
 
                 for(int tempKey : csvData){
                     System.out.print(tempKey);
@@ -37,7 +40,7 @@ public class TreeProgram {
             case "MAIN":
 //              main rand Int -> insert to Tree
 //                for treeSearch test, delete test, insert inner check
-                System.out.println(mode+" mode");
+                System.out.println(mode+" mode < < < < ");
                 node= insertNode(makeNode(9), makeNode(11));
 
                 int count= MAIN_RAND_COUNT -1;             // -1: for treeSearch test
@@ -62,8 +65,18 @@ public class TreeProgram {
         System.out.println("treeMinimum: "+String.valueOf(treeMinimum(node).getKey()));
         System.out.println("treeMaximum: "+String.valueOf(treeMaximum(node).getKey()));
 
-//        지울 노드를 달랑 하나 따로 만들어서 넣으면 안 된다. 그럼 자식들이 다 null 이겠지
-        node= deleteNode(node, treeSearch(node,11));
+
+
+//        toCSV
+
+
+
+//      forTest- rand Int 라 자꾸 null 발생하길래
+        int oneKey= csvData.get((int)(CSV_RAND_COUNT/2));
+        System.out.println("deleteKey: "+oneKey);
+
+//        지울 노드를 달랑 하나 따로 만들어서 넣으면 안 된다. 그럼 자식들이 다 null 됨.
+        node= deleteNode(node, treeSearch(node,oneKey));
         inorderTreeWork(node);
 
 //        못 찾으면 nullPointerException
@@ -118,14 +131,16 @@ public class TreeProgram {
 
     /**
      * 중위순회. root 호출 시 전체. 작은 값부터 출력
+     * 재귀적으로 계속 lIST 를 새로 할당해서 최종 나오는 결과가 1개뿐임- 당장 반환값이 필요하진 않음
      * @param node
      */
     static public void inorderTreeWork(TreeNode<Integer> node){
-
         if (null != node){
             inorderTreeWork(node.getLeft());
-            System.out.print(String.valueOf(node.getKey()));
-            System.out.print("\t");
+            if(null != node.getKey()){
+                System.out.print(String.valueOf(node.getKey()));
+                System.out.print("\t");
+            }
             inorderTreeWork(node.getRight());
         }
     }

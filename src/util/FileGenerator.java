@@ -17,10 +17,15 @@ public class FileGenerator {
    static public void generateCSV(int count){
 //        config
 //       final String FILE_PATH= "./export";
-//       final String NAME="randInt";
 //       final int RAND_RANGE= 100;
 
-       List<String> randStrings= new ArrayList<>();
+//       final String NAME_ALL= FILE_PATH+ "/randInt.csv";
+//       final String NAME_DELETE= FILE_PATH+ "/delete.csv";
+//       final String NAME_DELETE_COMPARE= FILE_PATH+ "/delete_compare.csv";
+
+       List<String> allDataList= new ArrayList<>();
+       List<String> evenDataList= new ArrayList<>();
+       List<String> oddDataList= new ArrayList<>();
        BufferedWriter fw= null;
 
        try{
@@ -30,28 +35,28 @@ public class FileGenerator {
            }
 
            // 덮어쓰기
-           File file= new File(FILE_PATH+"/"+NAME+".csv");
-           if( file.exists() ){
-               if(file.delete()){
-                   System.out.println("Existed file Delete Success !");
-               } else {
-                   System.out.println("Existed file Delete Fail..");
-               }
-           }else {
-               System.out.println("file not exist");
-           }
+           fileDelete(NAME_ALL);
+           fileDelete(NAME_DELETE);
+           fileDelete(NAME_DELETE_COMPARE);
 
-           fw= new BufferedWriter((new FileWriter(FILE_PATH+"/"+NAME+".csv", true)));
 
            while(count > 0){
-               String temp= Integer.toString((int)(Math.random()*RAND_RANGE));
-               randStrings.add(temp);
+               String randStr= Integer.toString((int)(Math.random()*RAND_RANGE));
+               if(0 == count % 2){
+                   evenDataList.add(randStr);
+               } else {
+                   oddDataList.add(randStr);
+               }
+               allDataList.add(randStr);
                count--;
            }
-           String temps= String.join(",",randStrings); //.toString() => [1,2,3] form
-           fw.write(temps);
 
-           fw.flush(); // to file
+
+//           파일 생성
+           listToCSV(NAME_ALL,allDataList);
+           listToCSV(NAME_DELETE,evenDataList);
+           listToCSV(NAME_DELETE_COMPARE,oddDataList);
+
 
        } catch(FileNotFoundException e){
            System.out.println("generate- no File");
@@ -68,4 +73,32 @@ public class FileGenerator {
            }
        }
    }
+
+   static void listToCSV(String fileName, List<String> dataList) throws IOException{
+       BufferedWriter fw= new BufferedWriter((new FileWriter(fileName, true)));
+       String genStrings= String.join(",",dataList); //.toString() => [1,2,3] form
+
+       fw.write(genStrings);
+       fw.flush(); // to file
+   }
+
+   static void fileDelete(String fileName){
+       File file= new File(fileName);
+       if( file.exists() ){
+           if(file.delete()){
+               System.out.println("Existed file Delete Success !");
+           } else {
+               System.out.println("Existed file Delete Fail..");
+           }
+       }else {
+           System.out.println("file not exist");
+       }
+   }
+
+//  TODO inorderTreeWork 를 String 이든 뭐든 반환하도록 해서 여기 입력으로 넣기
+    static public void toCSV(List<Integer> keyList){
+
+
+    }
+
 }

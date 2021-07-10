@@ -10,8 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static config.Config.FILE_PATH;
-import static config.Config.NAME;
+import static config.Config.NAME_ALL;
 
 /**
  * java read csv https://stackabuse.com/reading-and-writing-csvs-in-java
@@ -27,7 +26,7 @@ public class FileReaderMy {
         List<Integer> ret= new ArrayList<>();
 
         try {
-            br = Files.newBufferedReader(Paths.get(FILE_PATH + "/" + NAME + ".csv"));
+            br = Files.newBufferedReader(Paths.get(NAME_ALL));
             String line;
 //            1줄 이라고 생각해서 이렇게 짬
             while (((line = br.readLine()) != null)) {
