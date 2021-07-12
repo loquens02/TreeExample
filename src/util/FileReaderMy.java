@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static config.Config.NAME_ALL;
 
 /**
  * java read csv https://stackabuse.com/reading-and-writing-csvs-in-java
@@ -18,15 +17,14 @@ import static config.Config.NAME_ALL;
  * intellij line rearrange(ctrl alt L) https://www.jetbrains.com/help/idea/reformat-and-rearrange-code.html
  * java list string to int https://stackoverflow.com/a/37073454
  */
-
 public class FileReaderMy {
-    static public List<Integer> readCSV() {
+    public List<Integer> readCSV(String fileName) {
         BufferedReader br = null;
-        List<String> rows= new ArrayList<>();
-        List<Integer> ret= new ArrayList<>();
+        List<String> rows = new ArrayList<>();
+        List<Integer> ret = new ArrayList<>();
 
         try {
-            br = Files.newBufferedReader(Paths.get(NAME_ALL));
+            br = Files.newBufferedReader(Paths.get(fileName));
             String line;
 //            1줄 이라고 생각해서 이렇게 짬
             while (((line = br.readLine()) != null)) {
@@ -35,7 +33,7 @@ public class FileReaderMy {
             }
 
             ret = rows.stream().map(Integer::parseInt).collect(Collectors.toList());
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             System.out.println("read- no File");
             e.printStackTrace();
         } catch (IOException e) {
@@ -55,4 +53,21 @@ public class FileReaderMy {
         return ret;
     }
 
+    /**
+     * 요구사항: 결과물 csv 끼리 비교한다
+     * 둘 중 하나는 sort 가 안 되었는데? 검증용이니 sort ㄱㄱ
+     * java sort list https://manorgass.tistory.com/60
+     * java foreach 2 list https://stackoverflow.com/a/36662900
+     *java iterator compare elements int https://www.javatpoint.com/how-to-compare-two-arraylist-in-java
+     * @return true: same. false: different
+     */
+    public Boolean compareCSV(String fileName1, String fileName2) {
+        List<Integer> comparing1= readCSV(fileName1);
+        List<Integer> comparing2= readCSV(fileName2);
+
+        comparing1.sort(null);
+        comparing2.sort(null);
+
+        return comparing1.equals(comparing2);
+    }
 }
