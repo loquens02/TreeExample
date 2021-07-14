@@ -14,7 +14,7 @@ public interface Config {
 
     static final String NAME_INPUT_RESULT= FILE_PATH+ "/input_result.csv";
 
-    static final int CSV_RAND_COUNT= 10000;
+    static final int CSV_RAND_COUNT= 100;
     static final int MAIN_RAND_COUNT= 100;
-    static final int RAND_RANGE= 10000;
+    static final int RAND_RANGE= 1000;
 }

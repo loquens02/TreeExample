@@ -107,6 +107,10 @@ public class FileGenerator {
        }
    }
 
+    /**
+     * foreach index java (index++ 이 저렴하다고 함) https://twpower.github.io/54-get-index-in-java-iterator
+     * @param inputList
+     */
     public void generateCSV(List<Integer> inputList){
         if(null == inputList){
             return;

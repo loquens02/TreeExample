@@ -103,7 +103,7 @@ public class TreeProgram {
 
 
         System.out.println();
-//        System.out.println(String.valueOf(node));     //값이 작을 때만 출력
+        System.out.println("Tree: "+String.valueOf(node));     //값이 작을 때만 출력
         System.out.println("treeMinimum: " + String.valueOf(treeMinimum(node).getKey()));
         System.out.println("treeMaximum: " + String.valueOf(treeMaximum(node).getKey()));
 
