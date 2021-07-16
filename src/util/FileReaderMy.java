@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,8 +17,13 @@ import java.util.stream.Collectors;
  * java read csv https://jeong-pro.tistory.com/70
  * intellij line rearrange(ctrl alt L) https://www.jetbrains.com/help/idea/reformat-and-rearrange-code.html
  * java list string to int https://stackoverflow.com/a/37073454
- */
+**/
 public class FileReaderMy {
+    /**
+     * String to int [왔다갔다]
+     *  data 이상한 게 들어오면 '들어올 때' 아는 게 최선이라고 생각함. ex) 5`, 같은 거
+     *  <String> 으로 넘기면 받을 때는 몰랐다가 나중에 쓸 때 고장나서 원인해결이 어려워짐
+     **/
     public List<Integer> readCSV(String fileName) {
         BufferedReader br = null;
         List<String> rows = new ArrayList<>();
@@ -33,8 +39,11 @@ public class FileReaderMy {
             }
 
             ret = rows.stream().map(Integer::parseInt).collect(Collectors.toList());
+        } catch (NumberFormatException e){
+            System.err.println("readCSV- Input data type is not Integer");
+            e.printStackTrace();
         } catch (FileNotFoundException e) {
-            System.out.println("read- no File");
+            System.err.println("readCSV- no File");
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();

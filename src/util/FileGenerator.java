@@ -14,6 +14,10 @@ import static config.Config.*;
  */
 public class FileGenerator {
 
+    /**
+     * int to String
+     * @param count
+     */
     public void generateCSV(int count){
 
         List<String> allDataList= new ArrayList<>();
@@ -109,6 +113,9 @@ public class FileGenerator {
 
     /**
      * foreach index java (index++ 이 저렴하다고 함) https://twpower.github.io/54-get-index-in-java-iterator
+     * int to String
+     * for test. 특정 입력 케이스에 대해 . TEST_MODE
+     * testInput = Arrays.asList(86241,32584,25944,16216,81250,81417,83081,75865,21269,64331);
      * @param inputList
      */
     public void generateCSV(List<Integer> inputList){

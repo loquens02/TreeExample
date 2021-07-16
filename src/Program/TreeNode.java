@@ -1,4 +1,7 @@
+package Program;
+
 class TreeNode<T extends Number>{
+    private int height;
     private TreeNode<T> parent;
     private T key;
     private TreeNode<T> left;
@@ -8,8 +11,16 @@ class TreeNode<T extends Number>{
         this.key = key;
     }
 
-//    public TreeNode() { }
+//    public Program.TreeNode() { }
 
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
     public TreeNode<T> getParent() {
         return parent;
@@ -43,7 +54,7 @@ class TreeNode<T extends Number>{
         this.right = right;
     }
 
-//    이게 있어야 TreeNode 만 뽑아도 sout 에서 값이 나온다. 아니면 뽑을 때 node.getKey() 하거나.
+//    이게 있어야 Program.TreeNode 만 뽑아도 sout 에서 값이 나온다. 아니면 뽑을 때 node.getKey() 하거나.
 //   parent 를 그냥 넣으면 안 된다. parent 가 다시 하위 toString() 을 불러서 StackOverflowError 발생. null check 도 해야 함
 
     @Override
@@ -54,30 +65,12 @@ class TreeNode<T extends Number>{
         } else {
             strParent= String.valueOf(parent.getKey());
         }
-        return "TreeNode{" +
-                "parent=" + strParent +
+        return "Program.TreeNode{" +
+                "height=" + height +
+                ", parent=" + strParent +
                 ", key=" + key +
                 ", left=" + left +
                 ", right=" + right +
                 '}';
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
